@@ -14,7 +14,7 @@ $con = db_connect();
 check_login($con);
 
 $userid = intval(filter($con, $_POST["userid"]));
-$viewing_userid = intval(filter($con, $_POST["viewing_userid"]));
+@$viewing_userid = intval(filter($con, $_POST["viewing_userid"]));
 @$name = filter($con, $_POST["name"]);
 
 if (strlen($name) == 0 && $viewing_userid == 0) {

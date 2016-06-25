@@ -33,7 +33,7 @@
 <div class="demo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
     <main class="mdl-layout__content">
         <div class="demo-blog__posts mdl-grid">
-            <div class="mdl-card coffee-pic mdl-cell mdl-cell--8-col">
+            <div class="mdl-card coffee-pic mdl-cell mdl-cell--8-col" style="width: 584px">
                 <div class="mdl-card__media mdl-color-text--grey-50">
 
                     <iframe allowtransparency="true" frameborder="0" width="410" height="64" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=1&v=2&d=2&bd=0&k=&f=&q=0&e=1&a=1&c=54511&w=410&h=64&align=center"></iframe>
@@ -322,7 +322,7 @@
 </script>
 <script>
     /**
-     * 设置用户头像
+     * 设置用户头像和名称
      */
     function setUserIconURLAndName(){
         $.post("../api/view_user.php",{
@@ -417,8 +417,29 @@
         if (keyCode == 13) { // 回车
             var searchname = document.getElementById("search_user").value;
             document.getElementById("search_user").value = "";
-            window.open("../view_user/?name=" + searchname);
+            getUserIDFromUserName(searchname);
+//            window.open("../view_user/?name=" + searchname);
         }
+    }
+    function getUserIDFromUserName(name){
+        $.ajaxSetup({
+            aysnc: false
+        });
+        $.post("../api/view_user.php",{
+            "name": name,
+            "userid": getCookie("userid"),
+            "token": getCookie("token")
+        },function (data) {
+            console.log("in getUserIDFromUserName: "+ data);
+            var dataObj = JSON.parse(data);
+            if(dataObj.code == 0){
+                window.open("../view_user/?name=" + name + "&userid_to_view=" + dataObj.data.userid);
+            }else{
+                alert("拉取用户信息错误。错误代码：" + dataObj.code + "   错误信息：" + dataObj.message);
+            }
+            }
+        )
+
     }
 </script>
 
