@@ -13,16 +13,16 @@ function addOneCard(cardDataObject) {
 //        console.log()
     switch (cardDataObject.type){
         case "text":
-            cardData1.innerHTML ='<div class="mdl-card on-the-road-again mdl-cell mdl-cell--8-col" style="width: 640px">' +
+            cardData1.innerHTML ='<div class="mdl-card on-the-road-again mdl-cell mdl-cell--8-col" style="width: 584px">' +
                 '<div class="mdl-color-text--grey-600 mdl-card__supporting-text">' +
                 cardDataObject.text +  // 此处存放文字
                 '</div>' +
                 '<div class="mdl-card__supporting-text meta mdl-color-text--grey-600">'+
                 '<div class="minilogo"><img src="' + processIconStr(cardDataObject.icon) + '" width="45px", height="45px"></div> '+
-                '<div>'+
+                '<div onclick="window.open(' + "'../view_user/?userid=" + cardDataObject.userid + "'" +')"><div>'+
                 '<strong>' + cardDataObject.name + '</strong>'+  // 发布者名称
                 '<span>' + cardDataObject.create_time + '</span>'+ //发布时间
-                '</div>'+
+                '</div></div>'+
                 '<div>'+
                 '<ul><li class="on-card-button" onclick="window.open(' + "'../show_post/?postid=" + cardDataObject.postid + "'" + ')">评论</li></ul>'+
                 '</div>'+

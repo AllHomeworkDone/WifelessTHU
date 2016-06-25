@@ -35,16 +35,35 @@
         <div class="demo-blog__posts mdl-grid">
             <div class="mdl-card coffee-pic mdl-cell mdl-cell--8-col">
                 <div class="mdl-card__media mdl-color-text--grey-50">
-                    <h3>发表动态</h3>
+
                     <iframe allowtransparency="true" frameborder="0" width="410" height="64" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=1&v=2&d=2&bd=0&k=&f=&q=0&e=1&a=1&c=54511&w=410&h=64&align=center"></iframe>
+                    <span>发表动态</span>
                 </div>
                 <div class="mdl-card__media mdl-color-text--grey-50">
-                    <form action="../api/post.php" method="post" enctype="application/x-www-form-urlencoded">
-                        <input type="text" name="text" placeholder="想说点什么？" class="mdl-cell--8-col" style="height: 80px; width: 450px;; font-size: medium">
+                    <form onsubmit="submitPostForm()" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="text" id="postText" name="text" placeholder="想说点什么？" class="mdl-cell--8-col" style="height: 80px; width: 450px;; font-size: medium">
                         <input type="submit" value="发表">
                         <input name="token" id="tokenStore" value="" style="display: none">
                         <input name="userid" id="useridStore" value="" style="display: none">
                     </form>
+                    <script>
+                        function submitPostForm() {
+                            $.post("../api/post.php",{
+                                "text": document.getElementById("postText").value,
+                                "userid": getCookie("userid"),
+                                "token": getCookie("token")
+                            }, function (data) {
+                                console.log("in submitPostForm, data: " + data);
+                                var dataObj = JSON.parse(data);
+                                if(dataObj.code != 0) {
+                                    alert("动态发表错误，错误代码：" + dataObj.code + "   错误信息：" + dataObj.message);
+                                }else{
+                                    alert("动态发表成功！");
+                                    location.reload();
+                                }
+                            })
+                        }
+                    </script>
                 </div>
 
             </div>
@@ -54,7 +73,7 @@
                     <span class="visuallyhidden">add</span>
                 </button>
                 <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-                    <img src="" id="userIconInTopRight">
+                    <img src="" id="userIconInTopRight" width="100px" hight="100px">
                     <div style="text-align: center;" id="userNameInTopLeft"></div>
                     <br />
                     <h5>好友推荐：</h5>
@@ -77,7 +96,9 @@
             </div>
             <button id="haveNewPost" onclick="location.reload(true)" style="display: none">主人，您有新动态了~~ 点我刷新</button>
             <div id="postsContainer">  </div>
-            <button id="loadMore" onclick="loadMore()">加载更多</button>
+            <div></div>
+            <div style="clear: both"></div>
+            <button id="loadMore" onclick="loadMore()" style="clear: both">加载更多</button>
 
     </main>
     <div class="mdl-layout__obfuscator"></div>
@@ -134,6 +155,7 @@
     setWaitingState();
 </script>
 <script>
+    var previousLatestPostID = -1;
     function addCardFromJson(jsondata) {
         document.getElementById("waitingCard").style.display = "none";
         var data = JSON.parse(jsondata);
@@ -310,11 +332,11 @@
         }, function (data) {
             console.log("in setUserIconURL, data: " + data);
             var dataObj = JSON.parse(data);
-            if(data.code != 0){
+            if(dataObj.code != 0){
                 alert("拉取头像错误！错误码：" + dataObj.code + "   错误信息：" + dataObj.message);
                 return false;
             }else{
-                document.getElementById("userIconTopRight").src = processIconStr(dataObj.data.icon);
+                document.getElementById("userIconInTopRight").src = processIconStr(dataObj.data.icon);
                 document.getElementById("userNameInTopLeft").innerHTML = dataObj.data.name;
                 return true;
             }
@@ -350,7 +372,7 @@
      * 页面初始化
      * 需要已经存在的变量：
      */
-    var previousLatestPostID = -1;
+//    var previousLatestPostID = -1;
     function pageInitialize(){
 //        document.getElementById("havaNewPost")
         // 设置发布表格信息
