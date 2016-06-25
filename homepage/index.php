@@ -49,14 +49,15 @@
 
             </div>
             <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
-                <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('');">
+                <button style="display: none" class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('');">
                     <i class="material-icons mdl-color-text--white" role="presentation" style="font-size: medium">关注</i>
                     <span class="visuallyhidden">add</span>
                 </button>
                 <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-                    <img src="../images/image/logo_sample_64.png">   <!-- TODO 统一为用css控制 -->
+                    <img src="" id="userIconInTopRight">
+                    <div style="text-align: center;" id="userNameInTopLeft"></div>
                     <br />
-                    <h4>好友推荐：</h4>
+                    <h5>好友推荐：</h5>
                     <div id="recommend_friends">加载好友推荐中</div>
                 </div>
                 <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
@@ -141,7 +142,13 @@
 
         for (var i = 0; i < data.data.posts.length; i++) {
             cardData = data.data.posts[i];
-//            console.log("in addcardfromjson" + JSON.stringify(cardData));
+//           console.log("======in addcardfromjson" + JSON.stringify(cardData));
+            // 更新最新的id信息
+            var thisid = cardData.postid;
+            if(thisid > previousLatestPostID){
+                previousLatestPostID = thisid;
+                console.log("update of previousLatestPostID in addCardFromJson: " + previousLatestPostID);
+            }
             if (cardData.images) {
                 if (cardData.images[0])
                     cardData["type"] = "textAndImage";
@@ -231,9 +238,6 @@
     loadRecommend();
 </script>
 
-<script>
-    $(window).scroll(function(){console.log("scorll event2");})
-</script>
 
 <script>
     /**
@@ -295,9 +299,35 @@
 
 </script>
 <script>
+    /**
+     * 设置用户头像
+     */
+    function setUserIconURLAndName(){
+        $.post("../api/view_user.php",{
+            "viewing_userid": getCookie("userid"),
+            "userid": getCookie("userid"),
+            "token": getCookie("token")
+        }, function (data) {
+            console.log("in setUserIconURL, data: " + data);
+            var dataObj = JSON.parse(data);
+            if(data.code != 0){
+                alert("拉取头像错误！错误码：" + dataObj.code + "   错误信息：" + dataObj.message);
+                return false;
+            }else{
+                document.getElementById("userIconTopRight").src = processIconStr(dataObj.data.icon);
+                document.getElementById("userNameInTopLeft").innerHTML = dataObj.data.name;
+                return true;
+            }
+        })
+    }
+</script>
+<script>
+    $.ajaxSetup({
+        async: false
+    });
     function checkLatestPostID(){
-        var latestPostID = -1;
-        $.ajaxSetup({aysnc: false});
+        var latestPostID = -10;
+        $.ajaxSetup({aysnc: false,});
         $.post("../api/view_friends_posts.php", {
             "start": '0',
             "per_time": '1',
@@ -310,7 +340,7 @@
                 console.log("in checkLatestPostID: " + "动态获取错误");
             }else{ // 成功获取到了动态数据
                 latestPostID = dataObj.data.posts[0].postid;
-                console.log("thisPostID: " + latestPostID);
+                console.log("thisLatestPostID: " + latestPostID);
             }
         });
         return latestPostID;
@@ -326,11 +356,14 @@
         // 设置发布表格信息
         document.getElementById("tokenStore").value = getCookie("token");
         document.getElementById("useridStore").value = getCookie("userid");
+        // 设置用户头像和name
+        setUserIconURLAndName();
         console.log("in pageInitialize: useridStore= " + document.getElementById("useridStore").value );
         previousLatestPostID = checkLatestPostID();
     }
     pageInitialize();
 </script>
+
 <script>
     /**
      * 检查页面中是否有新动态
@@ -339,7 +372,9 @@
     function checkNewPost() {
         console.log("checkNewPost called");
         var thisID = checkLatestPostID();
+
         if(thisID > previousLatestPostID){
+            console.log("new post found: thisID" + thisID + "    previousLatestPostID: " + previousLatestPostID);
             previousLatestPostID = thisID;
             // 更新页面信息
             document.getElementById("haveNewPost").style.display = "block";
@@ -348,7 +383,7 @@
             return false;
         }
     }
-    setInterval(checkNewPost, 30000);
+    setInterval(checkNewPost, 3000);
 
 </script>
 <script>

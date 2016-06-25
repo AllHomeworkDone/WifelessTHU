@@ -1,5 +1,6 @@
 <?php
-    $name = $_GET['name'];
+// 必须以get的方式提供name参数
+    @$name = $_GET['name'];
     function name_to_userid($name, $post) {
         $post["userid"] = $_COOKIE["userid"];
         $post["token"] = $_COOKIE["token"];
