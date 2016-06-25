@@ -27,7 +27,7 @@
 </head>
 <body class="login-content ng-scope" data-ng-controller="loginCtrl as lctrl" youdao="bind">
 
-<div class="lc-block" id="l-login" data-ng-class="{&#39;toggled&#39;:lctrl.login === 1}">
+<div class="lc-block" id="l-login" data-ng-class="{'toggled':lctrl.login === 1}">
     <h1 class="lean">登陆</h1>
 
     <div class="input-group m-b-20">
@@ -73,7 +73,7 @@
 
 <!-- ngIf: lctrl.register === 1 -->
 
-<!-- ngIf: lctrl.forgot === 1 --><div class="lc-block ng-scope toggled" id="l-forget-password" data-ng-class="{ &#39;toggled&#39;: lctrl.forgot === 1 }" data-ng-if="lctrl.forgot === 1">
+<!-- ngIf: lctrl.forgot === 1 --><div class="lc-block ng-scope toggled" id="l-forget-password" data-ng-class="{ 'toggled': lctrl.forgot === 1 }" data-ng-if="lctrl.forgot === 1">
     <h1 class="lean">忘记密码</h1>
     <p class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu risus. Curabitur commodo lorem fringilla enim feugiat commodo sed ac lacus.</p>
     <div class="input-group m-b-20">
