@@ -57,7 +57,7 @@
         <div class="demo-blog__posts mdl-grid">
 
             <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop" style="max-height: 300px">
-                <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('');">
+                <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('<?php echo $_REQUEST['userid_to_view']?>');">
                     <i class="material-icons mdl-color-text--white" role="presentation" style="font-size: medium">关注</i>
                     <span class="visuallyhidden">add</span>
                 </button>

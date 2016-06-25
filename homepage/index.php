@@ -349,7 +349,7 @@
     });
     function checkLatestPostID(){
         var latestPostID = -10;
-        $.ajaxSetup({aysnc: false,});
+        $.ajaxSetup({aysnc: false});
         $.post("../api/view_friends_posts.php", {
             "start": '0',
             "per_time": '1',
