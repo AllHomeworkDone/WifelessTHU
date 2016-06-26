@@ -48,10 +48,10 @@
         for(var i = 0; i < friends_obj.data.length; ++i){
             if(friends_obj.data[i].icon){
                 if(friends_obj.data[i].icon.length <= 0){
-                    friends_obj.data[i].icon = "../images/icon/default.png";
+                    friends_obj.data[i].icon = "../images/icon/default.jpg";
                 }
             }else{
-                friends_obj.data[i].icon = "../images/icon/default.png";
+                friends_obj.data[i].icon = "../images/icon/default.jpg";
             }
         }
         console.log("in getFriends, check icon url:" + JSON.stringify(friends_obj.data));
