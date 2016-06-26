@@ -44,10 +44,10 @@
         for(var i = 0; i < fans_obj.data.length; ++i){
             if(fans_obj.data[i].icon){
                 if(fans_obj.data[i].icon.length <= 0){
-                    fans_obj.data[i].icon = "../images/icon/default.png";
+                    fans_obj.data[i].icon = "../images/icon/default.jpg";
                 }
             }else{
-                fans_obj.data[i].icon = "../images/icon/default.png";
+                fans_obj.data[i].icon = "../images/icon/default.jpg";
             }
         }
 //        console.log("in getFans, check icon url:" + JSON.stringify(fans_obj.data));
