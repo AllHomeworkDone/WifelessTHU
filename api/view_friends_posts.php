@@ -1,6 +1,6 @@
 <?php
 /**
- * 全部好友动态，分页返回
+ * 全部好友以及自己的动态，分页返回
  */
 
 require_once 'api_utilities.php';
@@ -11,7 +11,7 @@ $userid = intval(filter($con, $_POST["userid"]));
 $start = intval(filter($con, $_POST["start"]));
 $per_time = intval(filter($con, $_POST["per_time"]));
 
-$result = $con->query("SELECT post.*, user.name, user.icon, COUNT(commentid) AS num FROM post LEFT JOIN comment ON post.postid=comment.postid, friends, user WHERE post.userid = friends.followed_userid AND friends.fan_userid = $userid AND post.userid = user.userid GROUP BY postid ORDER BY create_time DESC LIMIT $start, $per_time");
+$result = $con->query("SELECT post.*, user.name, user.icon, COUNT(commentid) AS num FROM post LEFT JOIN comment ON post.postid=comment.postid, friends, user WHERE ((post.userid = friends.followed_userid AND friends.fan_userid = $userid) OR post.userid = $userid) AND post.userid = user.userid GROUP BY postid ORDER BY create_time DESC LIMIT $start, $per_time");
 check_sql_error($con);
 $count = mysqli_affected_rows($con);
 

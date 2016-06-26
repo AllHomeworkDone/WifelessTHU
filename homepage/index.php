@@ -35,9 +35,10 @@
         <div class="demo-blog__posts mdl-grid">
             <div class="mdl-card coffee-pic mdl-cell mdl-cell--8-col" style="width: 584px">
                 <div class="mdl-card__media mdl-color-text--grey-50">
-
                     <iframe allowtransparency="true" frameborder="0" width="410" height="64" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=3&t=1&v=2&d=2&bd=0&k=&f=&q=0&e=1&a=1&c=54511&w=410&h=64&align=center"></iframe>
-                    <span>发表动态</span>
+                </div>
+                <div class="mdl-card__media mdl-color-text--grey-50">
+                    <h4>发表动态</h4>
                 </div>
                 <div class="mdl-card__media mdl-color-text--grey-50">
                     <form onsubmit="submitPostForm()" method="post" enctype="application/x-www-form-urlencoded">
@@ -137,7 +138,7 @@
             '</div>' +
             '<div class="mdl-card__supporting-text meta mdl-color-text--grey-600">'+
             '<div class="minilogo"></div> '+
-            '<div>'+1
+            '<div>'+
             '<strong>' +  ' ' + '</strong>'+  // 发布者名称
             '<span> </span>'+
             '</div>'+
