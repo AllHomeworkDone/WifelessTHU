@@ -25,8 +25,3 @@ Social network system for database class
 * 运行 `db_connect_test.php` 以测试数据库配置是否成功
 * 终端下为 `images `文件夹赋予权限
 	* `chmod -R 777 images`
-	
-## 部分文件说明
-* homepage.php：用户登录之后显示的主页
-* reg.php：抄袭过来的用户注册界面
-* Material Admin_files/ :抄袭过来的js文件
