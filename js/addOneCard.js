@@ -19,8 +19,8 @@ function addOneCard(cardDataObject) {
                 '</div>' +
                 '<div class="mdl-card__supporting-text meta mdl-color-text--grey-600">'+
                 '<div class="minilogo"><img src="' + processIconStr(cardDataObject.icon) + '" width="45px", height="45px"></div> '+
-                '<div onclick="window.open(' + "'../view_user/?userid=" + cardDataObject.userid + "'" +')"><div>'+
-                '<strong>' + cardDataObject.name + '</strong>'+  // 发布者名称
+                '<div onclick="window.open(' + "'../view_user/?name=" + cardDataObject.name + "&userid_to_view=" + cardDataObject.userid + "'" +')"><div>'+
+                '<strong>' + cardDataObject.name + '</strong><br>'+  // 发布者名称
                 '<span>' + cardDataObject.create_time + '</span>'+ //发布时间
                 '</div></div>'+
                 '<div>'+

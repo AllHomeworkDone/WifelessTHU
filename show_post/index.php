@@ -4,6 +4,7 @@
 -->
 <html>
 <head>
+    <title>查看动态</title>
     <meta charset="utf-8">
     <script src="../js/angular.js"></script>
     <script src="../js/jquery-1.12.4.js"></script>
