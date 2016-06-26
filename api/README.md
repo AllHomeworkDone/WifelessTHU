@@ -292,9 +292,9 @@
  * `text` 动态内容
  * `images` 图片，参考查看动态 API 说明
  * `create_time` 发表时间
- * `create_user_userid` 动态发表用户id
- * `create_user_name` 动态发表用户姓名
- * `create_user_icon` 动态发表用户头像
+ * `userid` 动态发表用户id
+ * `name` 动态发表用户姓名
+ * `icon` 动态发表用户头像
  * `comments_num` 评论数
 
 ## 查看两步好友路径
