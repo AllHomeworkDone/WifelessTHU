@@ -1,14 +1,10 @@
 <?php
 // 必须以get的方式提供name参数
     @$name = $_GET['name'];
-//    var_dump($name);
     function name_to_userid($name, $post) {
         $post["userid"] = $_COOKIE["userid"];
         $post["token"] = $_COOKIE["token"];
         $post["name"] = $name;
-//        echo '$post["name"]';
-//        echo $name;
-//        var_dump($post);
         $url = dirname(dirname("http://" . $_SERVER['SERVER_NAME'] . $_SERVER["REQUEST_URI"])) . "/api/view_user.php";
         $options = array('http' => array(
             'header' => "Content-Type: application/x-www-form-urlencoded",
@@ -20,8 +16,6 @@
         return json_decode($result, true); // 以 array 返回json解码的数据
     }
     $viewing_userid = name_to_userid($name, array())["data"]["userid"];
-//var_dump($viewing_userid);
-//var_dump(name_to_userid($name, array()));
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -51,27 +45,70 @@
 
 <body background="../bg.jpg">
 
-
+<div class="mdl-card amazing mdl-cell mdl-cell--8-col" id="imagePostExample" style="display: none">
+    <div class="mdl-card__title mdl-color-text--grey-50" style="background: url(images/testImage/fate.jpeg)">
+        <span id = "cardText"> 这是有图片的展示页 </span>
+    </div>
+    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+    </div>
+    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+        <div class="minilogo"></div>
+        <div>
+            <strong><span id="userNameShow">The Newist</span></strong>
+            <span>2 days ago</span>
+        </div>
+    </div>
+</div>
+<div class="mdl-card on-the-road-again mdl-cell mdl-cell--8-col" id="textPostExample" style="display: none">
+    <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
+        <span id = "cardText"> 这是只有文字的展示页 </span>
+    </div>
+    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+        <div class="minilogo"></div>
+        <div>
+            <strong>The Newist</strong>
+            <span>2 days ago</span>
+        </div>
+        <div>
+            <ul>
+                <li class="on-card-button">
+                    赞
+                </li>
+                <li class="on-card-button">
+                    评论
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <div class="demo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
     <main class="mdl-layout__content">
         <div class="demo-blog__posts mdl-grid">
-
-            <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop" style="max-height: 300px">
-                <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('<?php echo $_REQUEST['userid_to_view']?>');">
+            <div class="mdl-card coffee-pic mdl-cell mdl-cell--8-col">
+                <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+                    <div class="minilogo"></div>
+                    <div>
+                        <strong>The Newist</strong>
+                        <span>2 days ago</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
+                <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent" onclick=" addFriend('');">
                     <i class="material-icons mdl-color-text--white" role="presentation" style="font-size: medium">关注</i>
                     <span class="visuallyhidden">add</span>
                 </button>
                 <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-                    <img src="" id="userIconInTopRight" width="100px" hight="100px">
-                    <div style="text-align: center;" id="userNameInTopLeft"></div>
+                    <img src="../images/image/logo_sample_64.png">   <!-- TODO 统一为用css控制 -->
                     <span id="numbers" style="display: inline-block"> </span>
                     <!-- 关注：<span id="numberOfFollowed" style="display: inline-block"> </span> | 粉丝：<span id="numberOfFans"> </span> | 动态：<span id="numberOfPosts"> </span> <br> -->
                     好友路径：
                     <div id="two_step_friend">加载好友路径中</div>
                 </div>
             </div>
-            <div id="postsContainer"> </div>
-            <button id="loadMore" onclick="loadMore()">加载更多</button>
+            <div id="postsContainer" >这是存储状态的位置</div>
+            <div id="loadMore" onclick="loadMore()">加载更多</div>
 
     </main>
     <div class="mdl-layout__obfuscator"></div>
@@ -98,7 +135,59 @@
     // 用于设置拖拽上传图片
 //    var myDropZone = new Dropzone("#imageUploadArea",{url: "../api/test_wenkai/handle_post_image.php"})
 </script>
-<script src="../js/addOneCard.js"></script>
+<script>
+    imagePostNode = document.getElementById("imagePostExample");
+    textPostNode = document.getElementById("textPostExample");
+    function addOneCard(cardDataObject) {
+        var cardData1 = document.createElement("div");
+        console.log("in addOneCard: " + JSON.stringify(cardDataObject));
+//        console.log()
+        switch (cardDataObject.type){
+            case "text":
+                cardData1.innerHTML ='<div class="mdl-card on-the-road-again mdl-cell mdl-cell--8-col" style="width: 640px">' +
+                    '<div class="mdl-color-text--grey-600 mdl-card__supporting-text">' +
+                    cardDataObject.text +  // 此处存放文字
+                    '</div>' +
+                    '<div class="mdl-card__supporting-text meta mdl-color-text--grey-600">'+
+                    '<div class="minilogo"></div> '+
+                    '<div>'+
+                    '<strong>' + cardDataObject.poster + '</strong>'+  // 发布者名称
+                    '<span>2 days ago</span>'+
+                    '</div>'+
+                    '<div>'+
+                    '<ul>        <li class="on-card-button">            赞            </li>            <li class="on-card-button">            评论            </li>            </ul>'+
+                    '</div>'+
+                    '</div>'+
+                    '</div>';
+                    break;
+            case "textAndImage":
+                cardData1.innerHTML ='<div class="mdl-card on-the-road-again mdl-cell mdl-cell--8-col" style="width: 640px">' +  //TODO 解决宽度不能自适应的问题
+                    '<div class="mdl-card__title mdl-color-text--grey-50" style="background: url('+
+                    cardDataObject.imageUrl + //最好是绝对路径，否则可能找不到
+                    ')">'+
+                    '</div>'+
+                    '<div class="mdl-color-text--grey-600 mdl-card__supporting-text">' +
+                    cardDataObject.textContent +  // 此处存放文字
+                    '</div>' +
+                    '<div class="mdl-card__supporting-text meta mdl-color-text--grey-600">'+
+                    '<div class="minilogo"></div> '+
+                    '<div>'+
+                    '<strong>' + cardDataObject.poster.posterName + '</strong>'+  // 发布者名称
+                    '<span>2 days ago</span>'+
+                    '</div>'+
+                    '<div>'+
+                    '<ul>  <li class="on-card-button">评论</li></ul>'+
+                    '</div>'+
+                    '</div>'+
+                    '</div>';
+                break;
+            default:
+                throw "Invalid cardDataObject type";
+        }
+        var postContainer = document.getElementById("postsContainer");
+        postContainer.appendChild(cardData1);
+    }
+</script>
 
 <script>
     // 用于在页面完全加载好之前显示提示信息
@@ -134,7 +223,7 @@
         console.log("in addcardfromjson" + JSON.stringify(data.data));
         if (data.code != 0) return false;
         for (var i = 0; i < data.data.posts.length; i++) {
-            var cardData = data.data.posts[i];
+            cardData = data.data.posts[i];
 //            console.log("in addcardfromjson" + JSON.stringify(cardData));
             if (cardData.images) {
                 if (cardData.images[0])
@@ -144,38 +233,10 @@
             } else {
                 cardData["type"] = "text";
             }
-            cardData.name = data.data.userinfo.name;
-            cardData.userid = data.data.userinfo.userid;
-            cardData.icon = data.data.userinfo.icon;
             addOneCard(cardData);
         }
         return true;
     }
-</script>
-
-<script>
-    /**
-     * 设置用户头像和名称
-     */
-    function setUserIconURLAndName(){
-        $.post("../api/view_user.php",{
-            "viewing_userid": "<?php echo $_REQUEST['userid_to_view']?>",
-            "userid": getCookie("userid"),
-            "token": getCookie("token")
-        }, function (data) {
-            console.log("in setUserIconURL, data: " + data);
-            var dataObj = JSON.parse(data);
-            if(dataObj.code != 0){
-                alert("拉取头像错误！错误码：" + dataObj.code + "   错误信息：" + dataObj.message);
-                return false;
-            }else{
-                document.getElementById("userIconInTopRight").src = processIconStr(dataObj.data.icon);
-                document.getElementById("userNameInTopLeft").innerHTML = dataObj.data.name;
-                return true;
-            }
-        })
-    }
-    setUserIconURLAndName();
 </script>
 <script>
     // 用于异步从服务器加载内容
@@ -190,7 +251,7 @@
                 "userid": getCookie("userid"),
                 "start": startIndex,
                 "per_time":itermsPertime,
-                "viewing_userid": <?php  echo $_REQUEST['userid_to_view']  ?>
+                "viewing_userid": <?php  echo $viewing_userid  ?>
             },
             function(data){console.log("autoload dataLoaded: " + data); isAddSuccessful = addCardFromJson(data)});  // 添加type参数为application/x-www-form-urlencoded后就会出现问题，不知道为什么
         console.log("isAddSuccessful: " + isAddSuccessful);
@@ -221,7 +282,7 @@
         {
             "token": getCookie("token"),
             "userid": getCookie("userid"),
-            "viewing_userid": <?php  echo $_REQUEST['userid_to_view']  ?>
+            "viewing_userid": <?php  echo $viewing_userid  ?>
         },
         function(data){console.log("check_friends: " + data); isFriend = JSON.parse(data)});
     }
@@ -230,7 +291,7 @@
         {
             "token": getCookie("token"),
             "userid": getCookie("userid"),
-            "target_id": <?php  echo $_REQUEST['userid_to_view']  ?>
+            "target_id": <?php  echo $viewing_userid  ?>
         },
         function(data){console.log("route dataLoaded: " + data); isFriendsRouteSuccessful = addRoute(data)});  // 添加type参数为application/x-www-form-urlencoded后就会出现问题，不知道为什么
         console.log("isFriendsRouteSuccessful: " + isFriendsRouteSuccessful);
@@ -334,7 +395,7 @@
         $.post("../api/view_following.php",{
             "userid": getCookie("userid"),
             "token": getCookie("token"),
-            "viewing_userid": <?php  echo $_REQUEST['userid_to_view']  ?>
+            "viewing_userid": <?php echo $viewing_userid ?>
         }, function(data){
             var number = JSON.parse(data).data.length;
             console.log("follow number: " + number);
@@ -344,7 +405,7 @@
         $.post("../api/view_fans.php",{
             "userid": getCookie("userid"),
             "token": getCookie("token"),
-            "viewing_userid": <?php  echo $_REQUEST['userid_to_view']  ?>
+            "viewing_userid": <?php echo $viewing_userid ?>
         }, function(data){
             var number = JSON.parse(data).data.length;
             console.log("fan number: " + number);
@@ -354,7 +415,7 @@
         $.post("../api/user_posts_num.php",{
             "userid": getCookie("userid"),
             "token": getCookie("token"),
-            "viewing_userid":<?php  echo $_REQUEST['userid_to_view']  ?>
+            "viewing_userid": <?php echo $viewing_userid ?>
         }, function(data){
             var number = 0;
             number = JSON.parse(data).data.count;

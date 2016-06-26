@@ -10,11 +10,6 @@
     <meta name="Keywords" content="">
     <meta name="Description" content="">
     <title>欢迎来到WifelessTHU</title>
-    <!--
-        作者：561568157@qq.com
-        时间：2016-01-07
-        描述：ICO
-    -->
     <link rel="shortcut icon" type="image/x-icon" href="http://www.17sucai.com/preview/207728/2016-01-07/login/favicon.ico">
     <!-- Vendor CSS -->
     <link href="../Material Admin_files/material-design-iconic-font.min.css" rel="stylesheet" type="text/css">
@@ -32,7 +27,8 @@
 
     <div class="input-group m-b-20">
     		<span class="input-group-addon">
-    			<i class="zmdi zmdi-account"></i>
+                用户名
+<!--    			<i class="zmdi zmdi-account">用户名</i>-->
     		</span>
         <div class="fg-line fg-toggled has-error">
             <input type="text" class="form-control" placeholder="Username" id="loginUserName" regex="^\w{3,16}$">
@@ -42,7 +38,8 @@
 
     <div class="input-group m-b-20">
     		<span class="input-group-addon">
-    			<i class="zmdi zmdi-male"></i>
+                密码
+<!--    			<i class="zmdi zmdi-male">密码</i>-->
     		</span>
         <div class="fg-line fg-toggled has-error">
             <input type="password" class="form-control" placeholder="Password" id="loginPassword" regex="^\w+">
@@ -54,7 +51,7 @@
     <div class="checkbox" style="display: none">
 <!--    TODO 保持登陆状态功能    -->
         <label>
-            <input type="checkbox" value="">
+            <input type="checkbox" value="" >
             <i class="input-helper">
                 Keep me signed in
             </i>
@@ -62,7 +59,8 @@
     </div>
 
     <div onclick=" postLoginAjax();"        class="btn btn-login btn-danger btn-float">
-        <i class="zmdi zmdi-arrow-forward"></i>
+        GO!
+<!--        <i class="zmdi zmdi-arrow-forward"></i>-->
     </div>
 
     <ul class="login-navigation">
@@ -75,7 +73,7 @@
 
 <!-- ngIf: lctrl.forgot === 1 --><div class="lc-block ng-scope toggled" id="l-forget-password" data-ng-class="{ 'toggled': lctrl.forgot === 1 }" data-ng-if="lctrl.forgot === 1">
     <h1 class="lean">忘记密码</h1>
-    <p class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu risus. Curabitur commodo lorem fringilla enim feugiat commodo sed ac lacus.</p>
+    <p class="text-left">可通过您的注册邮箱找回密码（正在开发中）。</p>
     <div class="input-group m-b-20">
         <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
         <div class="fg-line">
@@ -95,8 +93,8 @@
     <h1 class="lean">注册</h1>
 
     <div class="input-group m-b-20">
-    		<span class="input-group-addon">
-    			<i class="zmdi zmdi-account"></i>
+    		<span class="input-group-addon">用户名
+<!--    			<i class="zmdi zmdi-account"></i>-->
     		</span>
         <div class="fg-line">
             <input type="text" class="form-control" placeholder="Username" id="regUsername" regex="^\w{3,16}$"/>
@@ -104,8 +102,8 @@
     </div>
 
     <div class="input-group m-b-20">
-    		<span class="input-group-addon">
-    			<i class="zmdi zmdi-email"></i>
+    		<span class="input-group-addon">邮箱
+<!--    			<i class="zmdi zmdi-email"></i>-->
     		</span>
         <div class="fg-line">
             <input type="text" class="form-control" placeholder="Email Address" id="regEmail" regex="^\w+@\w+\.[a-zA-Z]+(\.[a-zA-Z]+)?$"/>
@@ -113,8 +111,8 @@
     </div>
 
     <div class="input-group m-b-20">
-    		<span class="input-group-addon">
-    			<i class="zmdi zmdi-male"></i>
+    		<span class="input-group-addon">密码
+<!--    			<i class="zmdi zmdi-male"></i>-->
     		</span>
         <div class="fg-line">
             <input type="password" class="form-control" placeholder="Password" id="regPassword" regex="^\w+"/>
@@ -125,13 +123,15 @@
 
     <div class="checkbox">
         <label>
-            <input type="checkbox" value=""/>
+            <input type="checkbox" value="" id="licenseCheckBox"/>
             <i class="input-helper"></i>
-            Accept the license agreement
+            我同意使用条款
         </label>
     </div>
 
-    <div onclick="postRegAjax();" class="btn btn-login btn-danger btn-float"><i class="zmdi zmdi-arrow-forward"></i></div>
+    <div onclick="postRegAjax();" class="btn btn-login btn-danger btn-float">GO!
+<!--        <i class="zmdi zmdi-arrow-forward"></i>-->
+    </div>
 
     <ul class="login-navigation">
         <li data-block="#l-login" class="bgm-green" data-ng-click="lctrl.register = 0; lctrl.login = 1">Login</li>
@@ -204,6 +204,10 @@
 </script>
 <script>
     function postRegAjax() {
+        if(document.getElementById("licenseCheckBox").checked == false){
+            alert("必须同意使用条款才能注册！");
+            return false;
+        }
         $.post("../api/register.php", {
             "name": document.getElementById("regUsername").value,
             "email": document.getElementById("regEmail").value,
